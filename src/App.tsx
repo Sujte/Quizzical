@@ -12,8 +12,8 @@ function App() {
           Start quiz!
         </Link>
       </div>
-      <img src={blob1} className="blob1" />
-      <img src={blob2} className="blob2" />
+      <img src={blob1} className="blob1" alt="" />
+      <img src={blob2} className="blob2" alt="" />
     </div>
   );
 }

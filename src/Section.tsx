@@ -4,8 +4,6 @@ function Section(prop: {
   question: string;
   answers: { answer: string; aId: string; isHeld: boolean; correct: boolean }[];
   qId: string;
-  flip: (aId: string, qId: string) => void;
-  state: boolean;
 }) {
   return (
     <div className="section">
@@ -16,10 +14,8 @@ function Section(prop: {
             ans={x.answer}
             aId={x.aId}
             isHeld={x.isHeld}
-            flip={prop.flip}
             key={x.aId}
             qId={prop.qId}
-            state={prop.state}
             correct={x.correct}
           />
         ))}

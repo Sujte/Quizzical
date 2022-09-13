@@ -1,14 +1,23 @@
+import { useContext } from "react";
+import { QuestionContext } from "./QuestionContext";
+
 function Answer(prop: {
   qId: string;
   ans: string;
   aId: string;
   isHeld: boolean;
-  flip: (aId: string, qId: string) => void;
-  state: boolean;
   correct: boolean;
 }) {
+  const ctx = useContext(QuestionContext);
+
+  if (!ctx) {
+    return null;
+  }
+
+  const { flip, gameOver } = ctx;
+
   const stylesF = () => {
-    if (prop.state === false) {
+    if (gameOver === false) {
       return {
         background: prop.isHeld ? "#d6dbf5" : "#f5f7fb",
         border: prop.isHeld ? "1px solid #d6dbf5" : "1px solid #4d5b9e",
@@ -45,13 +54,15 @@ function Answer(prop: {
   };
 
   return (
-    <button
-      type="button"
-      className="ans"
-      dangerouslySetInnerHTML={{ __html: prop.ans }}
-      style={stylesF()}
-      onClick={() => prop.flip(prop.aId, prop.qId)}
-    ></button>
+    <div>
+      <button
+        type="button"
+        className="ans"
+        dangerouslySetInnerHTML={{ __html: prop.ans }}
+        style={stylesF()}
+        onClick={() => flip(prop.aId, prop.qId)}
+      ></button>
+    </div>
   );
 }
 export default Answer;

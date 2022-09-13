@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Quiz from "./Quiz";
+import { QuestionContextProvider } from "./QuestionContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,10 +13,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/Quiz" element={<Quiz />} />
-      </Routes>
+      <QuestionContextProvider>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/Quiz" element={<Quiz />} />
+        </Routes>
+      </QuestionContextProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
