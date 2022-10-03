@@ -25,29 +25,35 @@ function Quiz() {
           <img src={blob1} className="blob1" alt="" />
           <img src={blob2} className="blob2" alt="" />
         </div>
-        <form className="wrap2">
-          {questionArr.map((x) => (
-            <Section
-              question={x.question}
-              answers={x.answers}
-              qId={x.qId}
-              key={x.qId}
-            />
-          ))}
+        {!isLoading && (
+          <div className="wrap2">
+            {questionArr.map((x) => (
+              <Section
+                question={x.question}
+                answers={x.answers}
+                qId={x.qId}
+                key={x.qId}
+              />
+            ))}
 
-          <div className="button-text">
-            {gameOver && (
-              <p className="you-win">
-                You scored {correctNum()}/5 correct answers
-              </p>
-            )}
-            {!isLoading && (
-              <button className="submit" onClick={(e) => youWin(e)}>
-                {gameOver ? "Play again" : "Check answers"}
-              </button>
-            )}
+            <div className="button-text">
+              {gameOver && (
+                <p className="you-win">
+                  You scored {correctNum()}/5 correct answers
+                </p>
+              )}
+              {!isLoading && (
+                <button
+                  type="button"
+                  className="submit"
+                  onClick={(e) => youWin(e)}
+                >
+                  {gameOver ? "Play again" : "Check answers"}
+                </button>
+              )}
+            </div>
           </div>
-        </form>
+        )}
       </div>
     </div>
   );

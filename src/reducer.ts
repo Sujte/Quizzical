@@ -4,6 +4,7 @@ export enum ACTION_TYPES {
   IS_LOADING = "isLoading",
 }
 
+
 export type Action =
   | {
       type: ACTION_TYPES.QUESTION_ARRAY;
