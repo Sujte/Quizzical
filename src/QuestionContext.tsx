@@ -59,6 +59,19 @@ const allAnswers = (answerI: string[], answerC: string) => {
   return myAnsObjArr;
 };
 
+const getQuestions = async () => {
+  const response = await fetch(
+    "https://opentdb.com/api.php?amount=5&category=9"
+  );
+  const data = await response.json();
+  const myArray = data.results.map((x: MyResponse) => ({
+    question: x.question,
+    qId: nanoid(),
+    answers: allAnswers(x.incorrect_answers, x.correct_answer),
+  }));
+  return myArray;
+};
+
 export const QuestionContextProvider = ({
   children,
 }: {
@@ -71,28 +84,10 @@ export const QuestionContextProvider = ({
   });
 
   useEffect(() => {
-    dispatch({ type: ACTION_TYPES.IS_LOADING, payload: { isLoading: true } });
-    const getQuestions = async () => {
-      const response = await fetch(
-        "https://opentdb.com/api.php?amount=5&category=9"
-      );
-      const data = await response.json();
-
-      return data;
-    };
     getQuestions().then((data) => {
-      const myArray = data.results.map((x: MyResponse) => ({
-        question: x.question,
-        qId: nanoid(),
-        answers: allAnswers(x.incorrect_answers, x.correct_answer),
-      }));
       dispatch({
         type: ACTION_TYPES.QUESTION_ARRAY,
-        payload: { questionArray: myArray },
-      });
-      dispatch({
-        type: ACTION_TYPES.IS_LOADING,
-        payload: { isLoading: false },
+        payload: { questionArray: data },
       });
     });
   }, []);
@@ -119,12 +114,24 @@ export const QuestionContextProvider = ({
     }
   };
 
-  const youWin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const youWin = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     if (state.gameOver === false) {
       dispatch({ type: ACTION_TYPES.GAME_OVER, payload: { gameOver: true } });
       event.preventDefault();
     } else if (state.gameOver) {
+      dispatch({ type: ACTION_TYPES.IS_LOADING, payload: { isLoading: true } });
+      const data = await getQuestions();
       dispatch({ type: ACTION_TYPES.GAME_OVER, payload: { gameOver: false } });
+      dispatch({
+        type: ACTION_TYPES.QUESTION_ARRAY,
+        payload: { questionArray: data },
+      });
+      dispatch({
+        type: ACTION_TYPES.IS_LOADING,
+        payload: { isLoading: false },
+      });
     }
   };
 
